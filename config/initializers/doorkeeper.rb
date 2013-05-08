@@ -8,13 +8,7 @@ Doorkeeper.configure do
 
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
-    # Put your resource owner authentication logic here.
-    # Example implementation:
-    result = Api::User.find(session[:user_id]) unless session[:user_id]
-    Rails.logger.debug "HERE---------->" + result.to_yaml
-    redirect_to(new_user_session_url)
-
-    #User.get(session[:user_id]) || redirect_to(new_user_session_url)
+    current_user || warden.authenticate!(:scope => :user)
   end
 
   # If you want to restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.
